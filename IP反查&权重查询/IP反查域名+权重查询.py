@@ -60,19 +60,20 @@ class IPToDomain:
             for line in stripped_lines:
                 pattern = r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d{1,5}|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})"
                 # 提取域名
-                pattern2 = r"://([a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?:\d{1,5})|([a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?)"
+                pattern2 = r"://([a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?:\d{1,5})|://([a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?)"
                 match = re.findall(pattern, line)
                 match2 = re.findall(pattern2, line)
                 if match:
                     hostname = match[0]
                     # print(ip)
                     self.hostname_list.append(hostname)
-                elif match2[0][0]:
-                    hostname = match2[0][0]
-                    self.hostname_list.append(hostname)
-                elif match2[0][2]:
-                    hostname = match2[0][2]
-                    self.hostname_list.append(hostname)
+                elif match2:
+                    if match2[0][0]:
+                        hostname = match2[0][0]
+                        self.hostname_list.append(hostname)
+                    elif match2[0][2]:
+                        hostname = match2[0][2]
+                        self.hostname_list.append(hostname)
                 else:
                     pass
 
@@ -184,7 +185,7 @@ class IPToDomain:
                     if aizhan_result:
                         for i in aizhan_result:
                             domain_list.append(i)
-                    domain_list = set(domain_list)
+                    domain_list = list(set(domain_list))
                 else:
                     with open("反查失败列表.txt", 'a', encoding='utf-8') as f:
                         f.write(ip + "\n")
@@ -208,11 +209,12 @@ class IPToDomain:
                             break
             ############################################
             #
-            self.result_json[f'{host}'] = domain_list
-            result = {f"{host}": self.result_json[f'{host}']}
-            with open('./tmp.txt', 'a', encoding='utf-8') as f:
-                f.write(json.dumps(result, ensure_ascii=False) + "\n")
-            print(result)
+            if domain_list:
+                self.result_json[f'{host}'] = domain_list
+                result = {f"{host}": self.result_json[f'{host}']}
+                with open('./tmp.txt', 'a', encoding='utf-8') as f:
+                    f.write(json.dumps(result, ensure_ascii=False) + "\n")
+                print(result)
         except:
             pass
 
@@ -226,8 +228,7 @@ if __name__ == '__main__':
     #
     #
     print('================================================================')
-    print('[-]  本脚本会自动提取IP、域名、去重，无固定格式要求')
-    print('[-]  权重查询默认关闭，若要开启设置: rank=True')
+    print(r'[-]  本脚本会自动提取 :\\开头的 IP、域名、去重')
     print('[-]  最终保存结果为json文件')
     print(f'[+]  host count: {len(scan.hostname_list)}')
     print('================================================================')
@@ -239,6 +240,6 @@ if __name__ == '__main__':
     for hostname in tqdm(scan.hostname_list):
         # print(i)
         scan.catch_result(hostname)
-    with open("查询结果.json", 'a', encoding='utf-8') as f:
+    with open("./查询结果.json", 'a', encoding='utf-8') as f:
         f.write(json.dumps(scan.result_json, ensure_ascii=False))
 
