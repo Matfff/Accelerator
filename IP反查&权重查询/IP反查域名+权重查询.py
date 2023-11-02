@@ -186,6 +186,11 @@ class IPToDomain:
                         for i in aizhan_result:
                             domain_list.append(i)
                     domain_list = list(set(domain_list))
+                    # 反查域名列表
+                    with open('./反查域名列表.txt', 'a', encoding='utf-8') as file:
+                        if domain_list:
+                            for domain in domain_list:
+                                file.write(f"{domain}\n")
                 else:
                     with open("反查失败列表.txt", 'a', encoding='utf-8') as f:
                         f.write(ip + "\n")
