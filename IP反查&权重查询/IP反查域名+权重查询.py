@@ -3,7 +3,7 @@
 """
 @Project ：pythonProject 
 @File    ：IP反查域名+权重查询.py
-@Author  ：
+@Author  ：fang
 @Date    ：2023-11-01 14:40 
 @脚本说明：
 """
@@ -28,6 +28,9 @@ class IPToDomain:
             pass
         with open('./权重不小于1的HOST.txt', 'w'):
             pass
+        with open('./反查域名列表.txt', 'w'):
+            pass
+        self.used_ip_list = []  # 反查过的IP，用于host去重
         self.path = path
         self.result_json = {}
         self.ip_list = []
@@ -172,28 +175,30 @@ class IPToDomain:
             # 将host中的ip筛选出来，进行IP反查
             if match:
                 ip = match[0]
-                ip138_result = self.ip138_chaxun(ip, ua_header)
-                aizhan_result = self.aizhan_chaxun(ip, ua_header)
-                time.sleep(1)
-                if ((ip138_result != None and ip138_result != []) or (aizhan_result != None and aizhan_result != [])):
-                    ############################################
-                    # 合并结果
-                    #
-                    if ip138_result:
-                        for i in ip138_result:
-                            domain_list.append(i)
-                    if aizhan_result:
-                        for i in aizhan_result:
-                            domain_list.append(i)
-                    domain_list = list(set(domain_list))
-                    # 反查域名列表
-                    with open('./反查域名列表.txt', 'a', encoding='utf-8') as file:
-                        if domain_list:
-                            for domain in domain_list:
-                                file.write(f"{domain}\n")
+                if not (ip in self.used_ip_list):
+                    self.used_ip_list.append(ip)
+                    ip138_result = self.ip138_chaxun(ip, ua_header)
+                    aizhan_result = self.aizhan_chaxun(ip, ua_header)
+                    time.sleep(1)
+                    if ((ip138_result != None and ip138_result != []) or (aizhan_result != None and aizhan_result != [])):
+                        ############################################
+                        # 合并结果
+                        #
+                        if ip138_result:
+                            for i in ip138_result:
+                                domain_list.append(i)
+                        if aizhan_result:
+                            for i in aizhan_result:
+                                domain_list.append(i)
+                        domain_list = list(set(domain_list))
+                        # 反查域名列表
+                        with open('./反查域名列表.txt', 'a', encoding='utf-8') as file:
+                            if domain_list:
+                                for domain in domain_list:
+                                    file.write(f"{domain}\n")
                 else:
-                    with open("反查失败列表.txt", 'a', encoding='utf-8') as f:
-                        f.write(ip + "\n")
+                    with open("反查失败列表.txt", 'a', encoding='utf-8') as file:
+                        file.write(ip + "\n")
             else:
                 domain_list.append(host)
             ############################################
