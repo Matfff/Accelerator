@@ -3,7 +3,7 @@
 """
 @Project ：pythonProject 
 @File    ：IP反查域名+权重查询.py
-@Author  ：fang
+@Author  ：
 @Date    ：2023-11-01 14:40 
 @脚本说明：
 """
