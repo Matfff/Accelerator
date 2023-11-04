@@ -20,8 +20,6 @@ class IPToDomain:
 
     def __init__(self, path, rank=False):
         # 清空文件
-        with open('查询结果.json', 'w'):
-            pass
         with open('./反查失败列表.txt', 'w'):
             pass
         with open('./tmp.txt', 'w'):
@@ -29,6 +27,8 @@ class IPToDomain:
         with open('./权重不小于1的HOST.txt', 'w'):
             pass
         with open('./反查域名列表.txt', 'w'):
+            pass
+        with open('./权重不小于1的域名.txt', 'w'):
             pass
         self.used_ip_list = []  # 反查过的IP，用于host去重
         self.path = path
@@ -125,6 +125,12 @@ class IPToDomain:
                              f"神马权重: Rank{sm_pr[0]}", f"搜狗权重: Rank{sogou_pr[0]}",
                              f"谷歌权重: Rank{google_pr[0]}"]
         }
+        # 查询权重不小于1的域名
+        with open('权重不小于1的域名.txt', 'a', encoding='utf-8') as f:
+            for i in range(1, 11):
+                if f'Rank{i}' in json.dumps(result, ensure_ascii=False):
+                    f.write(chaxunurl + "\n")
+                    break
         return result
 
     # ip138
@@ -238,8 +244,7 @@ if __name__ == '__main__':
     #
     #
     print('================================================================')
-    print(r'[-]  本脚本会自动提取 :\\开头的 IP、域名、去重')
-    print('[-]  最终保存结果为json文件')
+    print(r'[-]  本脚本会自动提取 :\\开头的 IP、域名, 去重')
     print(f'[+]  host count: {len(scan.hostname_list)}')
     print('================================================================')
     print()
@@ -250,6 +255,6 @@ if __name__ == '__main__':
     for hostname in tqdm(scan.hostname_list):
         # print(i)
         scan.catch_result(hostname)
-    with open("./查询结果.json", 'a', encoding='utf-8') as f:
+    with open("./查询结果.json", 'w', encoding='utf-8') as f:
         f.write(json.dumps(scan.result_json, ensure_ascii=False))
 
