@@ -12,7 +12,7 @@ import re
 
 def read_hostname():
     hostname_list = []
-    with open('../../致远OA/致远OA漏洞.txt', 'r', encoding='utf-8') as file:
+    with open('./url.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()
         stripped_lines = list(map(lambda line: line.rstrip(), lines))
         for line in stripped_lines:
@@ -33,7 +33,7 @@ def read_hostname():
 
 def read_ip():
     ip_list = []
-    with open('../../致远OA/致远OA漏洞.txt', 'r', encoding='utf-8') as file:
+    with open('./url.txt', 'r', encoding='utf-8') as file:
         lines = file.readlines()
         stripped_lines = list(map(lambda line: line.rstrip(), lines))
         for line in stripped_lines:
