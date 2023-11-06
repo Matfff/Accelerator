@@ -16,10 +16,8 @@ init(autoreset=True)
 
 urllib3.disable_warnings()
 
-# fofa_email = "809121932@qq.com"
-# fofa_key = "69764dbc1a3937c28dddc48a77fb7e85"
-fofa_email = "1412673980@qq.com"
-fofa_key = "a86e1208376b14817f70bc7886384dbe"
+fofa_email = "xxxxxxxx@eamil.com"
+fofa_key = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 headers = {
     'User-Agent': 'Mozilla/5.0 (Linux; Android 7.1.2; PCRT00 Build/N2G48H; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/66.0.3359.158 Safari/537.36 fanwe_app_sdk sdk_type/android sdk_version_name/4.0.1 sdk_version/2020042901 screen_width/720 screen_height/1280',
 }
