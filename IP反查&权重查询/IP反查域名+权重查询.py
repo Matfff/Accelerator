@@ -3,7 +3,7 @@
 """
 @Project ：pythonProject 
 @File    ：IP反查域名+权重查询.py
-@Author  ：
+@Author  ：fang
 @Date    ：2023-11-01 14:40 
 @脚本说明：
 """
@@ -128,7 +128,7 @@ class IPToDomain:
         # 查询权重不小于1的域名
         with open('权重不小于1的域名.txt', 'a', encoding='utf-8') as f:
             for i in range(1, 11):
-                if f'Rank{i}' in json.dumps(result, ensure_ascii=False):
+                if (f'Rank{i}' in json.dumps(result, ensure_ascii=False)) or ('.edu' in json.dumps(result, ensure_ascii=False)) or ('.gov' in json.dumps(result, ensure_ascii=False)):
                     f.write(chaxunurl + "\n")
                     break
         return result
